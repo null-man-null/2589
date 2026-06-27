@@ -65,9 +65,6 @@
 
 <!-- 
   =========================================
-  [SYSTEM LOG]
-  TIMESTAMP: 2026-06-28_06:12:34
-  STATE: POINTER_LOST
   
   CRITICAL_ERROR: NULL_POINTER_GRAVE
   
@@ -76,9 +73,8 @@
 -->
 
 <div class="container">
-    <div class="status">GATE_STATUS: LOCKED</div>
     <form id="gateForm" onsubmit="checkPassword(event)">
-        <input type="text" id="passkey" placeholder="ENTER PASSKEY" autocomplete="off">
+        <input type="text" id="passkey" placeholder="PASSWORD" autocomplete="off">
         <button type="submit">ACCESS</button>
     </form>
 </div>
@@ -88,11 +84,8 @@
         event.preventDefault();
         const input = document.getElementById('passkey').value.trim().toUpperCase();
         
-        // 正解は「NULL」
-        if (input === 'NULL') {
-            // 正解したら第3層（真っ白な部屋）のURLへリダイレクト
-            // ※「next_stage」の部分は、ご自身で作る3層目のフォルダ名やURLに書き換えてください
-            window.location.href = './next_stage/index.html';
+        if (btoa(input) === 'TlVMTA==') {
+    window.location.href = './next_stage/index.html';
         } else {
             // 間違えた時は冷たく無反応（または入力欄をクリア）
             document.getElementById('passkey').value = '';
