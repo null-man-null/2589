@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM_GATE_2589</title>
+    <style>
+        /* 静かで冷たい雰囲気を演出する黒と灰色のミニマルデザイン */
+        body {
+            background-color: #0b0b0b;
+            color: #888888;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+        }
+        .status {
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            color: #444444;
+        }
+        input[type="text"] {
+            background-color: #111111;
+            border: 1px solid #333333;
+            color: #ffffff;
+            padding: 10px 15px;
+            font-family: inherit;
+            font-size: 14px;
+            text-align: center;
+            outline: none;
+            letter-spacing: 1px;
+            width: 200px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: #555555;
+        }
+        button {
+            background-color: transparent;
+            border: 1px solid #333333;
+            color: #888888;
+            padding: 10px 20px;
+            font-family: inherit;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background-color: #111111;
+            color: #ffffff;
+            border-color: #555555;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 
+  =========================================
+  [SYSTEM LOG]
+  TIMESTAMP: 2026-06-28_06:12:34
+  STATE: POINTER_LOST
+  
+  CRITICAL_ERROR: NULL_POINTER_GRAVE
+  
+  * Note: The key is where everything is gone.
+  =========================================
+-->
+
+<div class="container">
+    <div class="status">GATE_STATUS: LOCKED</div>
+    <form id="gateForm" onsubmit="checkPassword(event)">
+        <input type="text" id="passkey" placeholder="ENTER PASSKEY" autocomplete="off">
+        <button type="submit">ACCESS</button>
+    </form>
+</div>
+
+<script>
+    function checkPassword(event) {
+        event.preventDefault();
+        const input = document.getElementById('passkey').value.trim().toUpperCase();
+        
+        // 正解は「NULL」
+        if (input === 'NULL') {
+            // 正解したら第3層（真っ白な部屋）のURLへリダイレクト
+            // ※「next_stage」の部分は、ご自身で作る3層目のフォルダ名やURLに書き換えてください
+            window.location.href = './next_stage/index.html';
+        } else {
+            // 間違えた時は冷たく無反応（または入力欄をクリア）
+            document.getElementById('passkey').value = '';
+            document.getElementById('passkey').placeholder = 'DENIED';
+            setTimeout(() => {
+                document.getElementById('passkey').placeholder = 'ENTER PASSKEY';
+            }, 1000);
+        }
+    }
+</script>
+
+</body>
+</html>
