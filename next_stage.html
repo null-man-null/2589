@@ -3,99 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3層目 - LAYER_03</title>
+    <title>LAYER_03</title>
     <style>
-        /* 徹底的に無機質で冷酷な世界観の演出 */
+        /* 感情を完全に削ぎ落としたモノクロの世界 */
         body {
             margin: 0;
             padding: 0;
-            background-color: #050505; /* 漆黒 */
-            color: #15bc1c; /* 昔のハッカー端末のような緑 */
-            font-family: 'Courier New', Courier, monospace;
+            background-color: #000000; /* 完全な漆黒 */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
             user-select: none;
+            -webkit-user-select: none;
         }
 
-        .container {
-            text-align: center;
-        }
-
-        /* プレイヤーを不安にさせる、不気味に明滅するテキスト */
-        .status {
-            font-size: 14px;
-            letter-spacing: 2px;
-            margin-bottom: 40px;
-            text-transform: uppercase;
-            animation: blink 2s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 0.8; }
-        }
-
-        /* 古いカセットデッキや実験機材をイメージした無骨な再生ボタン */
-        .play-btn {
-            background: none;
-            border: 2px solid #15bc1c;
-            color: #15bc1c;
-            padding: 20px 40px;
-            font-size: 16px;
-            font-family: inherit;
+        /* 中央に浮かぶ丸型の再生ボタン */
+        .circle-btn {
+            width: 90px;
+            height: 90px;
+            background-color: #000000;
+            border: 2px solid #ffffff; /* 白と黒のモノクロ */
+            border-radius: 50%; /* 完璧な丸型 */
             cursor: pointer;
-            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.4s ease;
             outline: none;
-            box-shadow: 0 0 10px rgba(21, 188, 28, 0.2);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
-        .play-btn:hover {
-            background-color: #15bc1c;
-            color: #050505;
-            box-shadow: 0 0 20px rgba(21, 188, 28, 0.6);
+        /* ボタンの中の「三角マーク（▶）」 */
+        .icon {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            /* 右向きの綺麗な三角形を作る（少し右にずらして中央の錯視を調整） */
+            border-width: 15px 0 15px 25px;
+            border-color: transparent transparent transparent #ffffff;
+            margin-left: 6px; 
+            transition: all 0.4s ease;
         }
 
-        .play-btn:active {
-            transform: scale(0.95);
+        /* マウスを乗せた（タップした）ときの反応 */
+        .circle-btn:hover {
+            background-color: #ffffff;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+        }
+        /* ホバー時に三角マークの色を黒に反転 */
+        .circle-btn:hover .icon {
+            border-color: transparent transparent transparent #000000;
+        }
+
+        .circle-btn:active {
+            transform: scale(0.92);
+        }
+
+        /* 再生中（isPlayingクラスがついたとき）の演出 */
+        /* 三角（▶）から一時停止の「縦線二本（■風）」に変形させます */
+        .circle-btn.playing .icon {
+            border-style: double;
+            border-width: 0px 0px 0px 22px;
+            border-color: transparent transparent transparent #ffffff;
+            margin-left: 0;
+            height: 26px;
+        }
+        /* 再生中にボタン自体を少し怪しく明滅させる */
+        .circle-btn.playing {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.8); }
+            100% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="status">SYSTEM_STATUS: AUDIBLE_LOG_AVAILABLE</div>
-        
-        <!-- 再生ボタン -->
-        <button class="play-btn" id="playButton">▶ PLAY_AUDIO</button>
-    </div>
+    <button class="circle-btn" id="coreButton">
+        <div class="icon" id="btnIcon"></div>
+    </button>
 
-    <!-- 背後で読み込まれるSiriの呪文音声 -->
     <audio id="audioTrack" src="4.m4a" preload="auto"></audio>
 
     <script>
-        const playButton = document.getElementById('playButton');
+        const coreButton = document.getElementById('coreButton');
         const audioTrack = document.getElementById('audioTrack');
         let isPlaying = false;
 
-        playButton.addEventListener('click', () => {
+        coreButton.addEventListener('click', () => {
             if (!isPlaying) {
                 audioTrack.play();
-                playButton.textContent = "■ STOP_AUDIO";
+                coreButton.classList.add('playing'); // 再生中モード（縦線に変化）
                 isPlaying = true;
             } else {
                 audioTrack.pause();
                 audioTrack.currentTime = 0; // 停止したら最初に戻す
-                playButton.textContent = "▶ PLAY_AUDIO";
+                coreButton.classList.remove('playing'); // 再生マーク（三角）に戻す
                 isPlaying = false;
             }
         });
 
-        // 音声が最後まで流れ終わったらボタンの表記を元に戻す
+        // 音声が最後まで流れ終わったら自動的に最初の状態に戻る
         audioTrack.addEventListener('ended', () => {
-            playButton.textContent = "▶ PLAY_AUDIO";
+            coreButton.classList.remove('playing');
             isPlaying = false;
         });
     </script>
