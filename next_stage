@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3層目 - LAYER_03</title>
+    <style>
+        /* 徹底的に無機質で冷酷な世界観の演出 */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #050505; /* 漆黒 */
+            color: #15bc1c; /* 昔のハッカー端末のような緑 */
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        /* プレイヤーを不安にさせる、不気味に明滅するテキスト */
+        .status {
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+        }
+
+        /* 古いカセットデッキや実験機材をイメージした無骨な再生ボタン */
+        .play-btn {
+            background: none;
+            border: 2px solid #15bc1c;
+            color: #15bc1c;
+            padding: 20px 40px;
+            font-size: 16px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+            box-shadow: 0 0 10px rgba(21, 188, 28, 0.2);
+        }
+
+        .play-btn:hover {
+            background-color: #15bc1c;
+            color: #050505;
+            box-shadow: 0 0 20px rgba(21, 188, 28, 0.6);
+        }
+
+        .play-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="status">SYSTEM_STATUS: AUDIBLE_LOG_AVAILABLE</div>
+        
+        <!-- 再生ボタン -->
+        <button class="play-btn" id="playButton">▶ PLAY_AUDIO</button>
+    </div>
+
+    <!-- 背後で読み込まれるSiriの呪文音声 -->
+    <audio id="audioTrack" src="4.m4a" preload="auto"></audio>
+
+    <script>
+        const playButton = document.getElementById('playButton');
+        const audioTrack = document.getElementById('audioTrack');
+        let isPlaying = false;
+
+        playButton.addEventListener('click', () => {
+            if (!isPlaying) {
+                audioTrack.play();
+                playButton.textContent = "■ STOP_AUDIO";
+                isPlaying = true;
+            } else {
+                audioTrack.pause();
+                audioTrack.currentTime = 0; // 停止したら最初に戻す
+                playButton.textContent = "▶ PLAY_AUDIO";
+                isPlaying = false;
+            }
+        });
+
+        // 音声が最後まで流れ終わったらボタンの表記を元に戻す
+        audioTrack.addEventListener('ended', () => {
+            playButton.textContent = "▶ PLAY_AUDIO";
+            isPlaying = false;
+        });
+    </script>
+</body>
+</html>
