@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LAYER_03</title>
+    <title>next_stage</title>
     <style>
-        /* 感情も動きも一切排除した、静寂のモノクロ */
+
         body {
             margin: 0;
             padding: 0;
-            background-color: #000000; /* 完全な漆黒 */
+            background-color: #000000;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -19,13 +19,13 @@
             -webkit-user-select: none;
         }
 
-        /* 中央に浮かぶ丸型のボタン */
+
         .circle-btn {
             width: 90px;
             height: 90px;
             background-color: #000000;
             border: 2px solid #ffffff; 
-            border-radius: 50%; /* 完璧な丸型 */
+            border-radius: 50%;
             cursor: pointer;
             position: relative;
             display: flex;
@@ -35,22 +35,22 @@
             outline: none;
         }
 
-        /* ボタンの中の「マーク」の共通ベース */
+
         .icon {
             transition: all 0.2s ease;
         }
 
-        /* --- 1. 通常時：再生マーク（白い三角） --- */
+
         .icon.play {
             width: 0;
             height: 0;
             border-style: solid;
             border-width: 15px 0 15px 25px;
             border-color: transparent transparent transparent #ffffff;
-            margin-left: 6px; /* 三角形の中央の錯視調整 */
+            margin-left: 6px;
         }
 
-        /* ホバー時に三角の色を黒に反転（再生中ではない時のみ） */
+
         .circle-btn:not(.playing):hover {
             background-color: #ffffff;
         }
@@ -58,8 +58,8 @@
             border-color: transparent transparent transparent #000000;
         }
 
-        /* --- 2. 再生中：一時停止マーク（白い二本線） --- */
-        /* 再生中（playing）は、マウスが乗ろうが離れようが、背景は黒、線は白で完全固定 */
+
+
         .circle-btn.playing {
             background-color: #000000 !important; 
             cursor: pointer;
@@ -97,17 +97,17 @@
                 audioTrack.play();
                 coreButton.classList.add('playing');
                 
-                // マークを確実に「一時停止（二本線）」に切り替える
+        
                 btnIcon.classList.remove('play');
                 btnIcon.classList.add('pause');
                 
                 isPlaying = true;
             } else {
                 audioTrack.pause();
-                audioTrack.currentTime = 0; // 最初に戻す
+                audioTrack.currentTime = 0;
                 coreButton.classList.remove('playing');
                 
-                // マークを「再生（三角）」に戻す
+        
                 btnIcon.classList.remove('pause');
                 btnIcon.classList.add('play');
                 
@@ -115,7 +115,7 @@
             }
         });
 
-        // 音声が最後まで流れ終わったら自動的に最初の状態（三角）に戻る
+
         audioTrack.addEventListener('ended', () => {
             coreButton.classList.remove('playing');
             btnIcon.classList.remove('pause');
